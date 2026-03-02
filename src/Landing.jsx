@@ -4,6 +4,7 @@ import { useRef } from "react";
 import CountdownTimer from "./components/CountdownTimer";
 import SideScrollMenu from "./components/SideScrollMenu";
 import Timeline from "./components/Timeline";
+import Themes from "./components/Themes"; // Fixed import name (capitalized)
 
 // Timeline data for hackathon schedule
 const timelineData = [
@@ -29,10 +30,11 @@ function HomeParallax() {
     <>
       <SideScrollMenu scrollToPage={scroll} />
 
-      <Parallax ref={parallaxRef} pages={3} style={{ background: "#222" }}>
+      {/* INCREASED PAGES FROM 3 TO 4 */}
+      <Parallax ref={parallaxRef} pages={4} style={{ background: "#222" }}>
 
         {/* ==========================
-            PAGE 1: SAMURAI HOME
+            PAGE 1: SAMURAI HOME (offset 0)
             ========================== */}
 
         {/* 1. MOUNTAINS (Background) */}
@@ -44,26 +46,21 @@ function HomeParallax() {
           />
         </ParallaxLayer>
 
-        {/* 2. LOGO (FIXED RESPONSIVENESS) 
-            - Removed fixed 'paddingLeft' (was pushing it off-center).
-            - Changed 'paddingTop: 200px' to 'paddingTop: 20vh' (20% of screen height).
-            - Added 'w-[80vw]' to ensure it scales on phones too.
-        */}
+        {/* 2. LOGO */}
         <ParallaxLayer
           offset={0}
           speed={0.2}
           style={{
             display: 'flex',
-            justifyContent: 'center', // Perfectly centered horizontally
-            alignItems: 'flex-start', // Starts from top
-            paddingTop: '25vh',       // Pushes down by 25% of ANY screen height
+            justifyContent: 'center',
+            alignItems: 'flex-start',
+            paddingTop: '25vh',
             zIndex: 50
           }}
         >
           <img
             src="/logo2.png"
             alt="HackStreet Logo"
-            // Width scales with screen width (80vw on mobile, max 600px on desktop)
             className="w-[80vw] md:w-[50vw] max-w-[600px] opacity-100"
             style={{
               filter: "invert(100%) sepia(100%) saturate(400%) hue-rotate(180deg) brightness(200%) contrast(100%) drop-shadow(0 0 3px rgba(0, 255, 255, 0.8)) drop-shadow(0 0 15px rgba(0, 100, 255, 0.4))"
@@ -71,9 +68,7 @@ function HomeParallax() {
           />
         </ParallaxLayer>
 
-        {/* 3. COUNTDOWN TIMER (FIXED RESPONSIVENESS)
-            - Changed 'paddingBottom: 80px' to '10vh' so it stays proportional.
-        */}
+        {/* 3. COUNTDOWN TIMER */}
         <ParallaxLayer
           offset={0}
           speed={0.2}
@@ -82,23 +77,22 @@ function HomeParallax() {
             display: 'flex',
             alignItems: 'flex-end',
             justifyContent: 'center',
-            paddingBottom: '12vh', // 12% from bottom on any device
+            paddingBottom: '12vh',
             pointerEvents: 'none'
           }}
         >
           <div style={{ pointerEvents: 'auto', transform: 'scale(0.9)' }}>
-            {/* Added scale(0.9) to ensure it fits on smaller laptop screens */}
             <CountdownTimer />
           </div>
         </ParallaxLayer>
 
-        {/* 4. SUN (Already good, but ensured centering) */}
+        {/* 4. SUN */}
         <ParallaxLayer offset={0} speed={0} style={{ zIndex: 5 }}>
           <img
             src="/sun.png"
-            className="absolute left-1/2 -translate-x-1/2 w-[250px] md:w-[300px]" // Responsive width
+            className="absolute left-1/2 -translate-x-1/2 w-[250px] md:w-[300px]"
             style={{
-              top: "10%", // Relative top position is good
+              top: "10%",
               transform: `translate(-50%, ${parallaxRef.current ? parallaxRef.current.current * 0.3 : 0}px)`
             }}
           />
@@ -115,7 +109,7 @@ function HomeParallax() {
 
 
         {/* ==========================
-            PAGE 2: ABOUT SECTION
+            PAGE 2: ABOUT SECTION (offset 1)
             ========================== */}
 
         {/* 6. BACKGROUND SCENERY */}
@@ -139,22 +133,19 @@ function HomeParallax() {
           <div className="absolute inset-0 bg-black/10"></div>
         </ParallaxLayer>
 
-        {/* 8. CONTENT (About Logo - FIXED RESPONSIVENESS) 
-            - Used flex-center instead of padding-top 5px (which is too tight).
-            - Added margin-top using 'vh' so it floats nicely.
-        */}
+        {/* 8. CONTENT (About Logo) */}
         <ParallaxLayer offset={1} speed={0.4} style={{ zIndex: 30 }}>
           <div
             className="h-full flex flex-col items-center"
             style={{
               justifyContent: 'flex-start',
-              paddingTop: '15vh' // Pushes it down 15% from top
+              paddingTop: '15vh'
             }}
           >
             <img
               src="/ab.png"
               alt="About HackStreet"
-              className="w-[80vw] md:w-[40vw] max-w-[600px]" // Responsive width
+              className="w-[80vw] md:w-[40vw] max-w-[600px]"
               style={{
                 filter: "invert(0) hue-rotate(0deg) drop-shadow(0 0 0px rgba(0, 0, 0, 0.66))"
               }}
@@ -164,11 +155,42 @@ function HomeParallax() {
 
 
         {/* ==========================
-            PAGE 3: TIMELINE SECTION
+            PAGE 3: THEMES SECTION (offset 2) - NEW
+            ========================== */}
+
+        {/* Themes Section Background */}
+        <ParallaxLayer offset={2} speed={0.4} style={{ zIndex: 30, overflow: 'auto', height: '100vh'}}>
+          <div 
+            className="w-full h-screen"
+            style={{
+              background: "linear-gradient(rgba(5, 6, 8, 0.7), rgba(5, 6, 8, 0.9)), url('/images/themes/bgnew.png')",
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              backgroundAttachment: "fixed"
+            }}
+          />
+        </ParallaxLayer>
+
+        {/* Themes Content */}
+        <ParallaxLayer 
+          offset={2} 
+          speed={0.4} 
+          style={{ 
+            zIndex: 30,
+            overflow: 'auto',
+            height: '100vh'
+          }}
+        >
+          <Themes />
+        </ParallaxLayer>
+
+
+        {/* ==========================
+            PAGE 4: TIMELINE SECTION (offset 3)
             ========================== */}
 
         {/* 9. TIMELINE BACKGROUND */}
-        <ParallaxLayer offset={2} speed={0.2} style={{ zIndex: 1 }}>
+        <ParallaxLayer offset={3} speed={0.2} style={{ zIndex: 1 }}>
           <img
             src="/Timeline_bg.jpg"
             className="w-full h-screen object-cover"
@@ -178,7 +200,7 @@ function HomeParallax() {
 
         {/* 10. TIMELINE CONTENT */}
         <ParallaxLayer 
-          offset={2} 
+          offset={3} 
           speed={0.4} 
           style={{ 
             zIndex: 30,
@@ -193,7 +215,7 @@ function HomeParallax() {
         </ParallaxLayer>
 
         {/* 11. SUBTLE GOLD GRADIENT OVERLAY */}
-        <ParallaxLayer offset={2} speed={0.1} style={{ zIndex: 10, pointerEvents: 'none' }}>
+        <ParallaxLayer offset={3} speed={0.1} style={{ zIndex: 10, pointerEvents: 'none' }}>
           <div style={{ 
             background: 'linear-gradient(to bottom, transparent, rgba(212, 175, 55, 0.05))',
             height: '100%' 
