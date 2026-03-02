@@ -8,3 +8,11 @@ body {
   padding: 0;
   background-color: #0c0c0c;
 }
+
+html {
+  scroll-behavior: smooth;
+}
+
+* {
+  scroll-behavior: smooth;
+}
