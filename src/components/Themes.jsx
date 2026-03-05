@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./themes.css";
+import "./Themes.css";
 
 /* ===============================
    THEMES DATA
