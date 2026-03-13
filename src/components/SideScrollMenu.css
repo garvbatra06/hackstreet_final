@@ -1,0 +1,149 @@
+/* src/components/SideScrollMenu.css */
+
+/* --- CONTAINER: Fixed to the Right Side --- */
+.scroll-container {
+  position: fixed;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  z-index: 9999;
+  filter: drop-shadow(-5px 5px 10px rgba(0, 0, 0, 0.8));
+}
+
+/* --- THE PAPER (The menu content) --- */
+.scroll-paper {
+  /* COMPACT SIZE: 200px Height */
+  height: 200px;
+  width: 0;
+  overflow: hidden;
+
+  /* DARK STEALTH COLOR */
+  background: rgba(20, 20, 25, 0.95);
+  border-top: 1px solid #8b0000;
+  /* Dark Red Border */
+  border-bottom: 1px solid #8b0000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* Smooth Animation */
+  transition: width 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* OPEN STATE */
+.scroll-container.open .scroll-paper {
+  width: 160px;
+  /* Compact width */
+}
+
+/* --- THE NAVIGATION BUTTONS --- */
+.paper-content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  /* Tighter spacing */
+  text-align: center;
+  width: 100%;
+}
+
+.paper-content button {
+  background: none;
+  border: none;
+  font-family: sans-serif;
+  /* Safe font */
+  color: #888;
+  /* Dimmed Text */
+  font-size: 0.9rem;
+  /* Small Font */
+  font-weight: bold;
+  opacity: 0;
+  transform: translateX(-10px);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  display: block;
+}
+
+.paper-content button:hover {
+  color: #ff003c;
+  /* Red Glow on Hover */
+  transform: scale(1.1);
+}
+
+/* Reveal buttons when open */
+.scroll-container.open .paper-content button {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* --- THE WOODEN ROLLER (The Handle) --- */
+.scroll-roller {
+  /* COMPACT HANDLE: 240px Height */
+  height: 240px;
+  width: 35px;
+  cursor: pointer;
+
+  /* BLACK LACQUER FINISH */
+  display: flex;
+  flex-direction: column;
+  /* Stack caps and body vertically */
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 10000;
+}
+
+/* The Middle Body of the Roller */
+.roller-body {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to right, #000, #222, #000);
+  border-left: 1px solid #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.scroll-roller:hover .roller-body {
+  background: linear-gradient(to right, #111, #333, #111);
+}
+
+/* VERTICAL TEXT ON HANDLE */
+.vertical-text {
+  writing-mode: vertical-rl;
+  text-orientation: upright;
+  /* Keeps letters upright */
+  color: #8b0000;
+  /* Dark Red Text */
+  font-weight: 900;
+  font-size: 0.8rem;
+  letter-spacing: 4px;
+  user-select: none;
+  transition: color 0.3s;
+}
+
+.scroll-container.open .vertical-text {
+  color: #ff003c;
+  text-shadow: 0 0 5px #ff003c;
+}
+
+/* DECORATIVE CAPS */
+.roller-cap {
+  position: absolute;
+  width: 100%;
+  height: 10px;
+  background: #333;
+  left: 0;
+}
+
+.roller-cap.top {
+  top: 0;
+  border-bottom: 1px solid #555;
+}
+
+.roller-cap.bottom {
+  bottom: 0;
+  border-top: 1px solid #555;
+}
