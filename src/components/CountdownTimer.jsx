@@ -11,8 +11,8 @@ const CountdownTimer = () => {
   });
 
   useEffect(() => {
-    // TARGET DATE: Feb 16, 2026
-    const targetDate = new Date("Feb 16, 2026 00:00:00").getTime();
+    // TARGET DATE: April 4, 2026 12:00 AM
+    const targetDate = new Date("Apr 4, 2026 00:00:00").getTime();
 
     const interval = setInterval(() => {
       const now = new Date().getTime();
@@ -36,7 +36,7 @@ const CountdownTimer = () => {
   return (
     <div className="timer-wrapper">
       <div className="timer-glass-panel">
-        
+
         {/* Days (日) */}
         <div className="time-unit">
           <div className="number">{timeLeft.days < 10 ? `0${timeLeft.days}` : timeLeft.days}</div>
