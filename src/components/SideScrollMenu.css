@@ -12,10 +12,33 @@
   filter: drop-shadow(-5px 5px 10px rgba(0, 0, 0, 0.8));
 }
 
+/* --- THE BACKDROP (Mobile Overlay) --- */
+.scroll-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(3px);
+  /* Subtle blur to focus the menu */
+  z-index: 9998;
+  /* Sits directly beneath the scroll menu */
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
 /* --- THE PAPER (The menu content) --- */
 .scroll-paper {
   /* COMPACT SIZE: 200px Height */
-  height: 200px;
+  height: 230px;
+  /* Increased slightly to fit the 6 buttons */
   width: 0;
   overflow: hidden;
 
@@ -43,7 +66,7 @@
 .paper-content {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
   /* Tighter spacing */
   text-align: center;
   width: 100%;
@@ -64,12 +87,14 @@
   transition: all 0.3s ease;
   cursor: pointer;
   display: block;
+  letter-spacing: 1px;
 }
 
 .paper-content button:hover {
   color: #ff003c;
   /* Red Glow on Hover */
   transform: scale(1.1);
+  text-shadow: 0 0 8px rgba(255, 0, 60, 0.5);
 }
 
 /* Reveal buttons when open */
@@ -78,17 +103,42 @@
   transform: translateX(0);
 }
 
+/* Add a slight stagger delay to the buttons appearing */
+.scroll-container.open .paper-content button:nth-child(1) {
+  transition-delay: 0.1s;
+}
+
+.scroll-container.open .paper-content button:nth-child(2) {
+  transition-delay: 0.15s;
+}
+
+.scroll-container.open .paper-content button:nth-child(3) {
+  transition-delay: 0.2s;
+}
+
+.scroll-container.open .paper-content button:nth-child(4) {
+  transition-delay: 0.25s;
+}
+
+.scroll-container.open .paper-content button:nth-child(5) {
+  transition-delay: 0.3s;
+}
+
+.scroll-container.open .paper-content button:nth-child(6) {
+  transition-delay: 0.35s;
+}
+
 /* --- THE WOODEN ROLLER (The Handle) --- */
 .scroll-roller {
   /* COMPACT HANDLE: 240px Height */
-  height: 240px;
+  height: 270px;
+  /* Increased slightly to match paper */
   width: 35px;
   cursor: pointer;
 
   /* BLACK LACQUER FINISH */
   display: flex;
   flex-direction: column;
-  /* Stack caps and body vertically */
   align-items: center;
   justify-content: center;
   position: relative;
@@ -146,4 +196,44 @@
 .roller-cap.bottom {
   bottom: 0;
   border-top: 1px solid #555;
+}
+
+
+/* =========================================
+   MOBILE RESPONSIVENESS (< 768px)
+========================================= */
+@media (max-width: 768px) {
+
+  /* Make the handle slightly wider for fat thumbs */
+  .scroll-roller {
+    width: 42px;
+    height: 300px;
+  }
+
+  /* Make the paper taller so buttons aren't squished */
+  .scroll-paper {
+    height: 260px;
+  }
+
+  /* Don't let it unroll quite as far, saving screen space */
+  .scroll-container.open .scroll-paper {
+    width: 140px;
+  }
+
+  /* Increase the gap to make sure they are easy to tap */
+  .paper-content {
+    gap: 16px;
+  }
+
+  .paper-content button {
+    font-size: 1rem;
+    padding: 4px 0;
+    /* Gives a larger invisible hit-box for thumbs */
+  }
+
+  /* Make the vertical text a tiny bit easier to read */
+  .vertical-text {
+    font-size: 0.9rem;
+    letter-spacing: 5px;
+  }
 }
