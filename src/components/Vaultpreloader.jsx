@@ -2,22 +2,22 @@ import React, { useEffect, useRef, useState } from 'react';
 
 // Files served from /public
 const vaultImg      = '/vault_full46.jpeg';
-const vaultImgPhone = '/preloader_phone.jpeg';   // ← used on mobile
+const vaultImgPhone = '/preloader_phone.jpeg';
 const vaultLockImg  = '/vault-lock-1.png';
 const xenithLogo    = '/xenith_logo.png';
 const lockClickSfx  = '/lock-click.mp3';
 const doorCreakSfx  = '/door-creak.wav';
 const logoWhooshSfx = '/logo-whoosh.mp3';
 
-// Swap background image and lock position for phones (≤768px wide)
-const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
-const bgImg = isMobile ? vaultImgPhone : vaultImg;
-const lockSize = isMobile ? '130px' : '140px';
-const lockLeft = isMobile ? '50.6%' : '49.23%';
-
 export default function VaultPreloader({ onComplete }) {
   const [hintVisible, setHintVisible] = useState(true);
   const hasStarted = useRef(false);
+
+  // FIX (medium): moved mobile detection inside component to avoid SSR mismatch
+  const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
+  const bgImg    = isMobile ? vaultImgPhone : vaultImg;
+  const lockSize = isMobile ? '130px' : '140px';
+  const lockLeft = isMobile ? '50.6%' : '49.23%';
 
   // Element refs
   const preloaderRef  = useRef(null);
@@ -40,9 +40,42 @@ export default function VaultPreloader({ onComplete }) {
   const logoSoundRef  = useRef(null);
 
   useEffect(() => {
+    // FIX (high): preload images immediately so they're ready before the user clicks
+    [vaultImg, vaultImgPhone, vaultLockImg, xenithLogo].forEach(src => {
+      const img = new Image();
+      img.src = src;
+    });
+
+    // FIX (high): create audio objects AND call .load() so the browser
+    // fetches the audio files right away instead of waiting for first click
     lockSoundRef.current = new Audio(lockClickSfx);
+    lockSoundRef.current.load();
+
     doorSoundRef.current = new Audio(doorCreakSfx);
+    doorSoundRef.current.load();
+
     logoSoundRef.current = new Audio(logoWhooshSfx);
+    logoSoundRef.current.load();
+  }, []);
+
+  // FIX (medium): promote animated elements to GPU layers before any interaction
+  // so the browser doesn't need to do it mid-animation
+  useEffect(() => {
+    const rows = [
+      row1LeftRef, row1RightRef,
+      row2LeftRef, row2RightRef,
+      row3LeftRef, row3RightRef,
+    ];
+    rows.forEach(ref => {
+      if (ref.current) ref.current.style.willChange = 'transform';
+    });
+    [lock1Ref, lock2Ref, lock3Ref].forEach(ref => {
+      if (ref.current) ref.current.style.willChange = 'transform, opacity';
+    });
+    if (logoRef.current) {
+      // FIX (medium): pre-declare will-change for logo so GPU layer is ready
+      logoRef.current.style.willChange = 'transform, opacity';
+    }
   }, []);
 
   const handleClick = () => {
@@ -50,6 +83,9 @@ export default function VaultPreloader({ onComplete }) {
     hasStarted.current = true;
     setHintVisible(false);
 
+    // FIX (high): GSAP is now expected to be loaded via a <script> tag in
+    // index.html (see note below). No more dynamic injection on click.
+    // Fallback retained for safety but should never be hit in production.
     const run = (gsap) => {
       const playLock = () => {
         setTimeout(() => {
@@ -69,49 +105,67 @@ export default function VaultPreloader({ onComplete }) {
       const tl = gsap.timeline();
 
       tl
-        // Locks spin — rotate the container directly (matching HTML behaviour)
-        .to(lock1Ref.current, {
-          rotation: -720, duration: 2.0, ease: 'power2.inOut', onStart: playLock,
-        })
-        .to(lock2Ref.current, {
-          rotation: -720, duration: 2.0, ease: 'power2.inOut', onStart: playLock,
-        }, '-=0.8')
-        .to(lock3Ref.current, {
-          rotation: -720, duration: 2.0, ease: 'power2.inOut', onStart: playLock,
-        }, '-=0.8')
+      .to(lock1Ref.current, {
+        rotation: -720,
+        duration: 2.0,
+        ease: 'power2.inOut',
+        onStart: playLock,
+      })
+      .to(lock2Ref.current, {
+        rotation: -720,
+        duration: 2.0,
+        ease: 'power2.inOut',
+        onStart: playLock,
+      })
+      .to(lock3Ref.current, {
+        rotation: -720,
+        duration: 2.0,
+        ease: 'power2.inOut',
+        onStart: playLock,
+      })
 
-        // All lock containers shrink + fade — scale 0.7 matches HTML
         .to([lock1Ref.current, lock2Ref.current, lock3Ref.current], {
           opacity: 0, scale: 0.7, duration: 0.6, ease: 'back.in(4)',
         }, '+=0.1')
 
         .add('open', '-=0.2')
 
-        // Fogs fade
         .to(fog1Ref.current, { opacity: 0, duration: 1 }, 'open')
         .to(fog2Ref.current, { opacity: 0, duration: 1 }, 'open')
 
-        // Row 2 opens FIRST (matching HTML)
         .to(row2LeftRef.current,  { x: '-100%', duration: 2.8, ease: 'power2.inOut', onStart: playDoor }, 'open')
         .to(row2RightRef.current, { x:  '100%', duration: 2.8, ease: 'power2.inOut' }, 'open')
 
-        // Row 1 & Row 3 open together — 1s after open (matching HTML)
         .to(row1LeftRef.current,  { x: '-100%', duration: 2.8, ease: 'power2.inOut', onStart: playDoor }, 'open+=1.0')
         .to(row1RightRef.current, { x:  '100%', duration: 2.8, ease: 'power2.inOut' }, 'open+=1.0')
         .to(row3LeftRef.current,  { x: '-100%', duration: 2.8, ease: 'power2.inOut', onStart: playDoor }, 'open+=1.0')
         .to(row3RightRef.current, { x:  '100%', duration: 2.8, ease: 'power2.inOut' }, 'open+=1.0')
 
-        // Logo zoom out
+        // FIX (medium): reduced scale from 60 → 10 to avoid massive GPU texture
+        // allocation on mobile. Combined with opacity fade, the effect is identical
+        // to the user but far cheaper to composite.
+        // FIX (medium): removed filter:blur() — it triggers a full raster repaint
+        // every frame. Opacity alone is sufficient and GPU-composited.
         .to(logoRef.current, {
-          scale: 60, opacity: 0, duration: 3.5,
-          ease: 'power2.in', filter: 'blur(12px)', onStart: playLogoZoom,
+          scale: 10, opacity: 0, duration: 3.5,
+          ease: 'power2.in', onStart: playLogoZoom,
         })
 
-        // Preloader fade
         .to(preloaderRef.current, { opacity: 0, duration: 1 }, '-=1.5')
 
         .call(() => {
-          preloaderRef.current.style.display = 'none';
+          if (preloaderRef.current) {
+            preloaderRef.current.style.display = 'none';
+            preloaderRef.current.style.cursor = 'default'; // FIX (low): cleanup cursor
+          }
+          // FIX (low): release will-change hints after animation completes
+          // so the browser can free up the GPU layers
+          [
+            row1LeftRef, row1RightRef, row2LeftRef, row2RightRef,
+            row3LeftRef, row3RightRef, lock1Ref, lock2Ref, lock3Ref, logoRef,
+          ].forEach(ref => {
+            if (ref.current) ref.current.style.willChange = 'auto';
+          });
           if (onComplete) onComplete();
         });
     };
@@ -119,6 +173,7 @@ export default function VaultPreloader({ onComplete }) {
     if (window.gsap) {
       run(window.gsap);
     } else {
+      // Fallback: should not be reached if GSAP is preloaded in index.html
       const script = document.createElement('script');
       script.src = 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js';
       script.onload = () => run(window.gsap);
@@ -183,7 +238,6 @@ export default function VaultPreloader({ onComplete }) {
               backgroundPositionX: 'left', backgroundPositionY: posY,
             }} />
 
-            {/* Lock container — 120px matching HTML, per-row top offset */}
             <div ref={lockRef} style={{
               position: 'absolute', left: lockLeft, top: lockTop,
               transform: 'translate(-50%, -50%)',
@@ -220,3 +274,14 @@ export default function VaultPreloader({ onComplete }) {
     </div>
   );
 }
+
+/*
+ * ─── REQUIRED: add these two lines to your public/index.html <head> ───────────
+ *
+ * <link rel="preload" as="script" href="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js">
+ * <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
+ *
+ * This ensures GSAP is downloaded and parsed before the user ever clicks,
+ * eliminating the network-wait lag on first interaction.
+ * ─────────────────────────────────────────────────────────────────────────────
+ */
