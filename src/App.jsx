@@ -1,8 +1,8 @@
 import React, { useEffect, useState, lazy, Suspense } from 'react';
 import Lenis from 'lenis';
 import VaultPreloader from './components/Vaultpreloader';
+import Landing from './Landing';
 
-const Landing = lazy(() => import('./Landing'));
 const Petals = lazy(() => import('./components/Petals'));
 const CursorSparkle = lazy(() => import('./components/CursorSparkle'));
 
@@ -39,19 +39,18 @@ function App() {
         <VaultPreloader onComplete={() => setPreloaderDone(true)} />
       )}
 
-      {/* Rest of site only loads after preloader done */}
+      {/* Particles — only after preloader */}
       {preloaderDone && (
         <Suspense fallback={null}>
-          {/* Layer 1: Particles */}
           <Petals />
-
-          {/* Layer 2: Tint */}
-          <div className="absolute inset-0 bg-black/30 pointer-events-none z-[15]" />
-
-          {/* Layer 3: The Main Parallax Page */}
-          <Landing />
         </Suspense>
       )}
+
+      {/* Tint */}
+      <div className="absolute inset-0 bg-black/30 pointer-events-none z-[15]" />
+
+      {/* Landing — always mounted, loads in background during preloader */}
+      <Landing />
     </div>
   );
 }

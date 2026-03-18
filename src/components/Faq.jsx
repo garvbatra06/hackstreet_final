@@ -1,264 +1,63 @@
 import { useState } from "react";
 
 const faqs = [
-  {
-    q: "Who can participate in HackStreet?",
-    a: "HackStreet is open to all college students. You can participate individually or as a team of up to 3 members. Beginners and experienced hackers alike are welcome!",
-  },
-  {
-    q: "Is there a registration fee?",
-    a: "No! HackStreet is completely free to participate in. Just register before 28th February and you're all set.",
-  },
-  {
-    q: "What should I bring to the hackathon?",
-    a: "Bring your laptop, charger, and any hardware you plan to use. We'll provide food, internet, and a high-energy environment to fuel your creativity.",
-  },
-  {
-    q: "Can I start working on my project before the hackathon?",
-    a: "No pre-built projects are allowed. All code must be written during the hacking period. You may use open-source libraries and publicly available APIs.",
-  },
-  {
-    q: "How will projects be judged?",
-    a: "Projects are evaluated on innovation, technical complexity, real-world impact, design, and presentation. Both the mid and final evaluation scores contribute.",
-  },
-  {
-    q: "What themes can I build on?",
-    a: "You may build on any of the announced themes. Cross-theme projects that blend multiple domains are encouraged — creativity has no bounds!",
-  },
-  {
-    q: "Will there be mentors available?",
-    a: "Yes! Industry mentors will be present throughout the event to guide you. Don't hesitate to reach out — they're there to help you level up.",
-  },
+  { q: "Who can participate in HackStreet?", a: "HackStreet is open to all college students. You can participate individually or form a team of up to 3 members. Developers, designers, and innovators from all skill levels are welcome." },
+  { q: "Is there any registration fee?", a: "No. HackStreet is completely free to participate in. Simply register before the deadline and you'll receive further details about the online event." },
+  { q: "How will the hackathon be conducted?", a: "HackStreet will be conducted entirely online. All announcements, mentoring sessions, and submissions will take place through our official platforms, which will be shared with registered participants." },
+  { q: "Can we start working on our project before the hackathon begins?", a: "No. All projects must be built during the official hacking period. However, you are free to brainstorm ideas, research technologies, and prepare beforehand." },
+  { q: "How will projects be submitted and judged?", a: "Teams will submit their projects through the official submission platform along with a demo video and project description. Judges will evaluate projects based on innovation, technical implementation, impact, design, and presentation." },
 ];
 
-export default function FAQ() {
+export default function FAQ({ sectionRef }) {
   const [open, setOpen] = useState(null);
+  const toggle = (i) => setOpen(open === i ? null : i);
 
   return (
     <>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Crimson+Text:ital,wght@0,400;1,400&display=swap');
-
-        .faq-section {
-          position: relative;
-          width: 100%;
-          min-height: 100vh;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          padding: 8vh 4vw 10vh;
-          overflow: hidden;
-        }
-
-        /* ── Background image ── */
-        .faq-bg {
-          position: absolute;
-          inset: 0;
-          background-image: url('/bg_faqs.jpeg');
-          background-size: cover;
-          background-position: center top;
-          z-index: 0;
-        }
-
-        /* dark vignette so scroll pops */
-        .faq-bg::after {
-          content: '';
-          position: absolute;
-          inset: 0;
-          background:
-            radial-gradient(ellipse at 50% 50%, rgba(0,5,20,0.25) 0%, rgba(0,5,20,0.65) 100%),
-            linear-gradient(to bottom, rgba(0,5,20,0.3) 0%, rgba(0,5,20,0.15) 40%, rgba(0,5,20,0.5) 100%);
-        }
-
-        /* soft moonlight glow on the scroll */
-        .faq-moon-glow {
-          position: absolute;
-          width: 700px; height: 700px;
-          top: 8%; left: 50%;
-          transform: translateX(-50%);
-          border-radius: 50%;
-          background: radial-gradient(circle, rgba(180,210,255,0.07) 0%, transparent 65%);
-          pointer-events: none;
-          z-index: 1;
-        }
-
-        .faq-title-wrap {
-          position: relative;
-          z-index: 10;
-          text-align: center;
-          margin-bottom: 44px;
-        }
-
-        .faq-title {
-          font-family: 'Cinzel', serif;
-          font-size: clamp(26px, 4.5vw, 52px);
-          font-weight: 900;
-          letter-spacing: 0.22em;
-          color: #fff;
-          text-transform: uppercase;
-          text-shadow:
-            0 0 20px rgba(192,57,43,0.7),
-            0 0 60px rgba(192,57,43,0.25),
-            0 2px 8px rgba(0,0,0,0.9);
-        }
-
-        .faq-title-sub {
-          display: block;
-          font-family: serif;
-          font-size: clamp(12px, 1.4vw, 17px);
-          letter-spacing: 0.55em;
-          color: rgba(220,160,120,0.8);
-          margin-top: 6px;
-          text-shadow: 0 1px 6px rgba(0,0,0,0.8);
-        }
-
-        .faq-title-rule {
-          width: 110px; height: 2px;
-          margin: 12px auto 0;
-          background: linear-gradient(90deg, transparent, rgba(192,57,43,0.9), transparent);
-          box-shadow: 0 0 12px rgba(192,57,43,0.5);
-        }
-
-        /* ── THE ONE BIG SCROLL ── */
-        .faq-scroll-wrap {
-          position: relative;
-          z-index: 10;
-          width: 100%;
-          max-width: 860px;
-          /* soft drop shadow so scroll lifts off the bg */
-          filter: drop-shadow(0 8px 40px rgba(0,0,0,0.7)) drop-shadow(0 2px 12px rgba(0,0,0,0.5));
-        }
-
-        .faq-scroll-bg {
-          position: relative;
-          width: 100%;
-          background-image: url('/scrollvid_00449.png');
-          background-size: 100% 100%;
-          background-repeat: no-repeat;
-        }
-
-        /* natural aspect ratio spacer */
-        .faq-scroll-bg::before {
-          content: '';
-          display: block;
-          padding-top: 46%;
-          min-height: 340px;
-        }
-
-        /* parchment content zone — inside the wooden rods + curled edges */
-        .faq-parchment {
-          position: absolute;
-          top: 18%;
-          bottom: 18%;
-          left: 11%;
-          right: 11%;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          overflow: hidden;
-        }
-
-        .faq-row {
-          border-bottom: 1px solid rgba(90,45,10,0.28);
-          cursor: pointer;
-          transition: background 0.18s;
-        }
-        .faq-row:last-child { border-bottom: none; }
-        .faq-row:hover { background: rgba(160,110,50,0.09); }
-
-        .faq-q-row {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          padding: 9px 12px;
-          gap: 10px;
-          user-select: none;
-        }
-
-        .faq-q-text {
-          font-family: 'Cinzel', serif;
-          font-size: clamp(8.5px, 1.2vw, 12.5px);
-          font-weight: 700;
-          color: #2b0f02;
-          line-height: 1.4;
-          flex: 1;
-        }
-
-        .faq-chevron {
-          color: rgba(140,32,12,0.9);
-          font-size: 11px;
-          flex-shrink: 0;
-          transition: transform 0.3s ease;
-          line-height: 1;
-        }
-        .faq-row.is-open .faq-chevron { transform: rotate(180deg); }
-
-        .faq-ans-wrap {
-          max-height: 0;
-          overflow: hidden;
-          transition: max-height 0.38s cubic-bezier(0.4,0,0.2,1), opacity 0.28s ease;
-          opacity: 0;
-        }
-        .faq-row.is-open .faq-ans-wrap {
-          max-height: 140px;
-          opacity: 1;
-        }
-
-        .faq-ans-body { padding: 0 12px 10px 12px; }
-
-        .faq-ans-rule {
-          width: 30px; height: 1px;
-          background: rgba(140,32,12,0.45);
-          margin-bottom: 5px;
-        }
-
-        .faq-a-text {
-          font-family: 'Crimson Text', Georgia, serif;
-          font-size: clamp(9.5px, 1.15vw, 12.5px);
-          font-style: italic;
-          color: #4e2005;
-          line-height: 1.68;
-        }
+        .faq-section { position: relative; width: 100%; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding: 9vh 5vw 11vh; overflow: hidden; }
+        .faq-bg { position: absolute; inset: 0; background-image: url('/bg_faqs.jpeg'); background-size: cover; background-position: center top; z-index: 0; }
+        .faq-bg::after { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 30%, rgba(0,8,28,0.15) 0%, rgba(0,8,28,0.75) 100%); }
+        .faq-title-wrap { position: relative; z-index: 10; text-align: center; margin-bottom: 56px; }
+        .faq-title { font-family: 'Cinzel', serif; font-size: clamp(24px, 4vw, 52px); font-weight: 900; letter-spacing: 0.2em; color: #fff; text-transform: uppercase; text-shadow: 0 0 18px rgba(120,160,255,0.6), 0 0 40px rgba(120,160,255,0.25), 0 2px 10px rgba(0,0,0,0.9); }
+        .faq-title-rule { width: 100px; height: 1.5px; margin: 12px auto 0; background: linear-gradient(90deg, transparent, rgba(120,160,255,0.85), transparent); box-shadow: 0 0 10px rgba(120,160,255,0.4); }
+        .faq-lanterns { position: relative; z-index: 10; width: 100%; max-width: 900px; display: flex; flex-direction: column; gap: 18px; }
+        .lantern { position: relative; cursor: pointer; border-radius: 10px; }
+        .lantern-body { position: relative; padding: 22px 24px 20px; overflow: hidden; background: rgba(8,18,40,0.65); backdrop-filter: blur(12px); border: 1px solid rgba(120,160,255,0.25); border-radius: 10px; transition: all 0.4s ease; box-shadow: 0 0 25px rgba(100,140,255,0.15), inset 0 0 30px rgba(120,160,255,0.05); }
+        .lantern:hover .lantern-body { transform: translateY(-6px) scale(1.02); box-shadow: 0 0 35px rgba(120,160,255,0.35), 0 0 80px rgba(70,120,255,0.15); }
+        .lantern.is-open .lantern-body { border-color: rgba(160,200,255,0.6); box-shadow: 0 0 45px rgba(120,170,255,0.5), inset 0 0 60px rgba(120,170,255,0.15); }
+        .lantern-num { font-family: 'Cinzel', serif; font-size: 10px; font-weight: 700; letter-spacing: 0.18em; color: rgba(150,180,255,0.65); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+        .lantern-num::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, rgba(150,180,255,0.3), transparent); }
+        .lantern-toggle { position: absolute; top: 18px; right: 18px; width: 22px; height: 22px; border-radius: 50%; border: 1px solid rgba(150,180,255,0.4); display: flex; align-items: center; justify-content: center; color: rgba(180,210,255,0.8); font-size: 14px; transition: all 0.3s ease; }
+        .lantern.is-open .lantern-toggle { transform: rotate(45deg); border-color: rgba(200,230,255,1); color: #fff; box-shadow: 0 0 10px rgba(120,170,255,0.6); }
+        .lantern-q { font-family: 'Cinzel', serif; font-size: clamp(16px, 4vw, 22px); font-weight: 700; color: rgba(220,235,255,0.95); text-shadow: 0 0 10px rgba(120,160,255,0.4); line-height: 1.4; margin: 0; padding-right: 40px; white-space: normal; }
+        .lantern-answer { overflow: hidden; max-height: 0; opacity: 0; transition: max-height 0.45s cubic-bezier(0.4,0,0.2,1), opacity 0.35s ease; }
+        .lantern.is-open .lantern-answer { max-height: 220px; opacity: 1; }
+        .lantern-answer-inner { padding-top: 13px; margin-top: 13px; border-top: 1px solid rgba(150,180,255,0.25); }
+        .lantern-a { font-family: 'Crimson Text', Georgia, serif; font-size: clamp(16px, 1.3vw, 18px); color: rgba(210,225,255,0.9); line-height: 1.8; }
       `}</style>
-
-      <section className="faq-section">
-        {/* bg image + vignette */}
+      <section ref={sectionRef} className="faq-section">
         <div className="faq-bg" />
-        <div className="faq-moon-glow" />
-
         <div className="faq-title-wrap">
           <h2 className="faq-title">Frequently Asked Questions</h2>
-          <span className="faq-title-sub">よくある質問</span>
           <div className="faq-title-rule" />
         </div>
-
-        {/* THE SCROLL */}
-        <div className="faq-scroll-wrap">
-          <div className="faq-scroll-bg">
-            <div className="faq-parchment">
-              {faqs.map((faq, i) => (
-                <div
-                  key={i}
-                  className={`faq-row${open === i ? " is-open" : ""}`}
-                  onClick={() => setOpen(open === i ? null : i)}
-                  role="button"
-                  aria-expanded={open === i}
-                >
-                  <div className="faq-q-row">
-                    <span className="faq-q-text">{faq.q}</span>
-                    <span className="faq-chevron">▾</span>
-                  </div>
-                  <div className="faq-ans-wrap">
-                    <div className="faq-ans-body">
-                      <div className="faq-ans-rule" />
-                      <p className="faq-a-text">{faq.a}</p>
-                    </div>
+        <div className="faq-lanterns">
+          {faqs.map((faq, i) => (
+            <div key={i} className={`lantern${open === i ? " is-open" : ""}`} onClick={() => toggle(i)}>
+              <div className="lantern-body">
+                <div className="lantern-toggle">+</div>
+                <div className="lantern-num">{String(i + 1).padStart(2, "0")}</div>
+                <p className="lantern-q">{faq.q}</p>
+                <div className="lantern-answer">
+                  <div className="lantern-answer-inner">
+                    <p className="lantern-a">{faq.a}</p>
                   </div>
                 </div>
-              ))}
+              </div>
             </div>
-          </div>
+          ))}
         </div>
       </section>
     </>
