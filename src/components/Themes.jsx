@@ -97,10 +97,12 @@ const Themes = () => {
   return (
     <section className="themes" id="themes">
       <div className="themes__header">
-        <h2 className="themes__title">
-          Hackathon Themes
-        </h2>
-      </div>
+  <img
+    src="/themes_title.png"
+    alt="Hackathon Themes"
+    className="themes__title-img"
+  />
+</div>
 <div className="themes__mobile-instruction">
           <span className="tech-bracket">{'<'}</span>
           <span className="glitch-text">TAP TO DECRYPT</span>

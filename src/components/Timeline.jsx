@@ -4,8 +4,7 @@ import './Timeline.css';
 /**
  * Timeline Component
  * Displays hackathon schedule events in a vertical timeline with scroll animations
- * 
- * @param {Array} items - Timeline events data
+ * * @param {Array} items - Timeline events data
  * @param {string} className - Additional CSS classes
  */
 const Timeline = ({ items = [], className = '' }) => {
@@ -48,11 +47,21 @@ const Timeline = ({ items = [], className = '' }) => {
 
   return (
     <section className={`timeline-container ${className}`} ref={timelineRef}>
-      <div className="timeline-header">
-        <h2 className="timeline-title">
-          <span className="timeline-title-en">Event Timeline</span>
-          <span className="timeline-title-jp">行程表</span>
-        </h2>
+
+      {/* 💥 UPDATED TITLE SECTION: Scaled up and centered! */}
+      <div className="timeline-title-wrapper" style={{ textAlign: "center", marginBottom: "40px" }}>
+        <img
+          src="/event_timeline.png"
+          alt="Event Timeline"
+          className="timeline-title-img"
+          style={{
+            width: "90%",
+            maxWidth: "800px", /* 👈 Change this to 600px or 700px if you want it even BIGGER on PC */
+            margin: "0 auto",
+            display: "block"
+          }}
+        />
+        <span className="timeline-title-jp" style={{ marginTop: "15px", display: "block" }}>行程表</span>
       </div>
 
       <div className="timeline-wrapper">
@@ -65,9 +74,8 @@ const Timeline = ({ items = [], className = '' }) => {
               key={index}
               ref={(el) => (itemRefs.current[index] = el)}
               data-index={index}
-              className={`timeline-item ${
-                index % 2 === 0 ? 'timeline-item-left' : 'timeline-item-right'
-              } ${visibleItems.includes(index) ? 'timeline-item-visible' : ''}`}
+              className={`timeline-item ${index % 2 === 0 ? 'timeline-item-left' : 'timeline-item-right'
+                } ${visibleItems.includes(index) ? 'timeline-item-visible' : ''}`}
             >
               {/* Timeline marker (circle on the line) */}
               <div className="timeline-marker">

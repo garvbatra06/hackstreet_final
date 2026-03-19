@@ -1,3 +1,4 @@
+
 /* ========================================
    Timeline Component Styles
    Glass morphism design matching existing system
@@ -316,4 +317,31 @@
   .timeline-card {
     max-width: 500px;
   }
+}
+/* ===============================
+   TIMELINE TITLE IMAGE
+================================ */
+
+.timeline-title-wrapper {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.timeline-title-img {
+  width: 500px;   
+  max-width: 150%;
+  height: auto;
+  display: block;
+  margin: 0 auto 10px;
+
+  /* clean look (no glow) */
+  filter: none;
+}
+
+/* keep Japanese subtitle */
+.timeline-title-jp {
+  font-family: 'Yu Mincho', serif;
+  font-size: 1.2rem;
+  color: var(--timeline-gold);
+  letter-spacing: 4px;
 }

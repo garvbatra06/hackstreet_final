@@ -16,3 +16,9 @@
           drop-shadow(0 0 8px rgba(180, 195, 220, 0.3));
   will-change: filter;
 }
+
+@media (max-width: 768px) {
+   .cursor-sparkle-canvas {
+     display: none;
+   }
+ }

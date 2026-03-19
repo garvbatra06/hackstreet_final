@@ -295,3 +295,52 @@ body {
   .themes { background-attachment: scroll; padding: 4rem 1rem; }
   .themes__header { margin-bottom: 2.5rem; }
 }
+/* ===============================
+   THEMES HEADER (Hackathon Themes Image)
+================================ */
+
+.themes__header {
+  text-align: center;
+  margin-bottom: 70px;
+  position: relative;
+  z-index: 10;
+}
+
+.themes__title-img {
+  width: 500px;
+  max-width: 55%;
+  height: auto;
+
+  display: block;
+  margin: 0 auto;
+
+  filter: none !important;   /* 🔥 force remove glow */
+  animation: none !important;
+}
+
+/* Hover effect */
+.themes__title-img:hover {
+  transform: scale(1.05);
+  filter: 
+    drop-shadow(0 0 12px #00eaff)
+    drop-shadow(0 0 30px #00eaff)
+    drop-shadow(0 0 60px rgba(0, 234, 255, 0.9));
+}
+
+/* Subtle breathing glow animation */
+.themes__title-img {
+  animation: neonPulse 2.5s infinite alternate;
+}
+
+@keyframes neonPulse {
+  from {
+    filter: 
+      drop-shadow(0 0 6px #00eaff)
+      drop-shadow(0 0 15px #00eaff);
+  }
+  to {
+    filter: 
+      drop-shadow(0 0 20px #00eaff)
+      drop-shadow(0 0 40px #00eaff);
+  }
+}
