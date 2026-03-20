@@ -178,6 +178,7 @@ export default function VaultPreloader({ onComplete }) {
           letterSpacing: '3px', textTransform: 'uppercase', fontSize: '10px',
           zIndex: 10001, animation: 'xv-heartbeat 1.2s ease-in-out infinite',
           pointerEvents: 'none',
+          whiteSpace: 'nowrap',
         }}>
           Tap to Unlock the Vault
         </div>
