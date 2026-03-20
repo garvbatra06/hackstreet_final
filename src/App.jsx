@@ -1,5 +1,6 @@
 import React, { useEffect, useState, lazy, Suspense } from 'react';
 import Lenis from 'lenis';
+import { Analytics } from '@vercel/analytics/react';
 import VaultPreloader from './components/Vaultpreloader';
 import Landing from './Landing';
 
@@ -59,6 +60,7 @@ function App() {
       <div className="absolute inset-0 bg-black/30 pointer-events-none z-[15]" />
 
       <Landing />
+      <Analytics />
     </div>
   );
 }
