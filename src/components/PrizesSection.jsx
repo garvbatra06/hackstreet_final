@@ -13,7 +13,7 @@ export default function PrizesSection({ sectionRef }) {
         <div style={{ position: "relative", zIndex: 40, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "flex-start", paddingTop: "4vh", minHeight: "100vh" }}>
           <div className="container mx-auto px-6 w-full flex flex-col items-center">
             <div className="w-full flex justify-center mb-4 mt-[-2vh] lg:mt-0">
-              <img src="/prizepool.png" alt="Prize Pool" className="w-[80vw] md:w-[60vw] lg:w-[900px] h-auto object-contain drop-shadow-[0_0_25px_rgba(220,38,38,0.7)] transform transition-transform duration-700 hover:scale-105" />
+            <img src="/prizepool.png" alt="Prize Pool" className="w-[110vw] md:w-[60vw] lg:w-[900px] h-auto drop-shadow-[0_0_25px_rgba(220,38,38,0.7)] transform transition-transform duration-700 hover:scale-105" style={{ maxWidth: "none" }} />
             </div>
             <div className="flex flex-col lg:flex-row items-center gap-6 lg:gap-16 w-full max-w-7xl">
               <div className="w-full lg:w-2/5 flex justify-center relative pointer-events-none mt-8 lg:mt-12 translate-y-6 lg:translate-y-12">

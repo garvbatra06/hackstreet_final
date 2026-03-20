@@ -50,17 +50,17 @@ const Timeline = ({ items = [], className = '' }) => {
 
       {/* 💥 UPDATED TITLE SECTION: Scaled up and centered! */}
       <div className="timeline-title-wrapper" style={{ textAlign: "center", marginBottom: "40px" }}>
-        <img
-          src="/event_timeline.png"
-          alt="Event Timeline"
-          className="timeline-title-img"
-          style={{
-            width: "90%",
-            maxWidth: "800px", /* 👈 Change this to 600px or 700px if you want it even BIGGER on PC */
-            margin: "0 auto",
-            display: "block"
-          }}
-        />
+      <img
+  src="/event_timeline.png"
+  alt="Event Timeline"
+  className="timeline-title-img"
+  style={{
+    width: "clamp(260px, 200vw, 500px)",
+    maxWidth: "100%",
+    margin: "0 auto",
+    display: "block"
+  }}
+/>
         <span className="timeline-title-jp" style={{ marginTop: "15px", display: "block" }}>行程表</span>
       </div>
 

@@ -1,11 +1,26 @@
 import { useState } from "react";
 
 const faqs = [
-  { q: "Who can participate in HackStreet?", a: "HackStreet is open to all college students. You can participate individually or form a team of up to 3 members. Developers, designers, and innovators from all skill levels are welcome." },
-  { q: "Is there any registration fee?", a: "No. HackStreet is completely free to participate in. Simply register before the deadline and you'll receive further details about the online event." },
-  { q: "How will the hackathon be conducted?", a: "HackStreet will be conducted entirely online. All announcements, mentoring sessions, and submissions will take place through our official platforms, which will be shared with registered participants." },
-  { q: "Can we start working on our project before the hackathon begins?", a: "No. All projects must be built during the official hacking period. However, you are free to brainstorm ideas, research technologies, and prepare beforehand." },
-  { q: "How will projects be submitted and judged?", a: "Teams will submit their projects through the official submission platform along with a demo video and project description. Judges will evaluate projects based on innovation, technical implementation, impact, design, and presentation." },
+  {
+    q: "Who can participate in HackStreet?",
+    a: "HackStreet is open to all college students. You can participate individually or form a team of up to 3 members. Developers, designers, and innovators from all skill levels are welcome.",
+  },
+  {
+    q: "Is there any registration fee?",
+    a: "No. HackStreet is completely free to participate in. Simply register before the deadline and you'll receive further details about the online event.",
+  },
+  {
+    q: "How will the hackathon be conducted?",
+    a: "HackStreet will be conducted entirely online. All announcements, mentoring sessions, and submissions will take place through our official platforms, which will be shared with registered participants.",
+  },
+  {
+    q: "Can we start working on our project before the hackathon begins?",
+    a: "No. All projects must be built during the official hacking period. However, you are free to brainstorm ideas, research technologies, and prepare beforehand.",
+  },
+  {
+    q: "How will projects be submitted and judged?",
+    a: "Teams will submit their projects through the official submission platform along with a demo video and project description. Judges will evaluate projects based on innovation, technical implementation, impact, design, and presentation.",
+  },
 ];
 
 export default function FAQ({ sectionRef }) {
@@ -40,15 +55,29 @@ export default function FAQ({ sectionRef }) {
       <section ref={sectionRef} className="faq-section">
         <div className="faq-bg" />
         <div className="faq-title-wrap">
-        <img src="/FAQ.png" />
+          <img
+            src="/FAQ.png"
+            style={{
+              width: "clamp(260px, 80vw, 600px)",
+              height: "auto",
+              display: "block",
+              margin: "0 auto",
+            }}
+          />
           <div className="faq-title-rule" />
         </div>
         <div className="faq-lanterns">
           {faqs.map((faq, i) => (
-            <div key={i} className={`lantern${open === i ? " is-open" : ""}`} onClick={() => toggle(i)}>
+            <div
+              key={i}
+              className={`lantern${open === i ? " is-open" : ""}`}
+              onClick={() => toggle(i)}
+            >
               <div className="lantern-body">
                 <div className="lantern-toggle">+</div>
-                <div className="lantern-num">{String(i + 1).padStart(2, "0")}</div>
+                <div className="lantern-num">
+                  {String(i + 1).padStart(2, "0")}
+                </div>
                 <p className="lantern-q">{faq.q}</p>
                 <div className="lantern-answer">
                   <div className="lantern-answer-inner">

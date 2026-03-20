@@ -9,6 +9,15 @@ const CursorSparkle = lazy(() => import('./components/CursorSparkle'));
 function App() {
   const [preloaderDone, setPreloaderDone] = useState(false);
 
+  // Lock scroll while preloader is active
+  useEffect(() => {
+    if (!preloaderDone) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+  }, [preloaderDone]);
+
   useEffect(() => {
     if (!preloaderDone) return;
 
