@@ -172,7 +172,7 @@ export default function VaultPreloader({ onComplete }) {
       {/* Click hint */}
       {hintVisible && (
         <div style={{
-          position: 'fixed', top: '50%', left: '50%',
+          position: 'absolute', top: '50%', left: '50%',
           transform: 'translate(-50%, -50%)',
           color: 'rgba(255,255,255,0.85)', fontFamily: 'sans-serif',
           letterSpacing: '3px', textTransform: 'uppercase', fontSize: '10px',
